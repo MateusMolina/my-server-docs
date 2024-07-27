@@ -6,6 +6,16 @@ Devices show up as files in /dev. They must first be mounted (normally in /mnt) 
 
 For this there is lsblk and fdisk -l. lsblk is less detailed but more objective.
 
+## Preparing disks
+
+First, the partitions should be correctly setup. Below an example for a simple partitioning scheme using EXT4:
+
+```sh
+sudo parted /dev/sdb mklabel gpt
+sudo parted -a optimal /dev/sdb mkpart primary ext4 0% 100%
+sudo mkfs.ext4 /dev/sdb1
+````
+
 ## Mounting
 
 1. Create the dir where you want the dev to be mounted
@@ -29,3 +39,6 @@ Below auto-mounting sdb1 on /mnt/nas_disk1
 
 Using `mount -a` for example.
 
+## Checking disk health
+
+`sudo smartctl -a /dev/sdb | less`
